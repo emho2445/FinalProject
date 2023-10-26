@@ -17,12 +17,14 @@ struct CoordinateView: View {
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-//                Rectangle()
-//                    .colorInvert()
-//                    .frame(height: 400)
-//                    .opacity(0.70)
+                Rectangle()
+                    .colorInvert()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(0.70)
                 
                 VStack{
+                    Spacer()
                     
                     Group{
                         Text("Enter a LATITUDE in the field below. This is a number between -90 and 90. You may include up to 4 decimal points")
@@ -50,10 +52,12 @@ struct CoordinateView: View {
                         lng = ""
                     }.customNavigationLink()
                     
+                    Spacer()
+                    
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
+                //.background(.ultraThinMaterial)
             })
 
         .navigationTitle("Set Location")

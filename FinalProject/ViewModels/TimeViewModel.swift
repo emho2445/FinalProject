@@ -9,6 +9,7 @@ import Foundation
 
 class TimeViewModel: ObservableObject {
     @Published var locationTimes: LocationTimes?
+    @Published var notificationsDisabled: Bool = true
     
     @MainActor
     func getSunTimes(lat: String, lng: String) -> () {
@@ -22,6 +23,10 @@ class TimeViewModel: ObservableObject {
                 print("Error: \(error.localizedDescription)")
             }
         }
+    }
+    
+    func changeNotificationPermissions(){
+        notificationsDisabled = false
     }
     
     

@@ -9,7 +9,7 @@ import Foundation
 import NotificationCenter
 
 class PushNotificationService {
-    var isPermissionGranted = false
+     var isPermissionGranted: Bool = false
 
     func requestPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
@@ -21,32 +21,17 @@ class PushNotificationService {
         }
     }
 
-    func scheduleNotification(coordinates: String, subtitle: String, time: String) {
-        //Parses the string time entered ("##:##:## AM/PM") into two segments ["##:##:##", "AM/PM"] by space
-        let firstTimeParse = time.split(separator: " ")
+    func scheduleNotification(coordinates: String, subtitle: String, time: Date) {
+        let calendar = Calendar.current
         
-        //Parses the first element of the array above "##:##:##" into three segments ["##", "##", "##"] by :
-        let secondTimeParse = firstTimeParse[0].split(separator: ":")
+        let hour = calendar.component(.hour, from: time)
+        let minute = calendar.component(.minute, from: time)
+        let seconds = calendar.component(.second, from: time)
+        let day = calendar.component(.day, from: time)
+        let month = calendar.component(.month, from: time)
+        let year = calendar.component(.year, from: time)
         
-        var hour = Int() // will hold the int value of military time
-        
-        //The outter most if statement checks the AM/PM element to see which time of day it is since we need to convert PM times to military
-        if firstTimeParse[1] == "PM"{
-            //The if statement checks to see if it is noon. If it is noon then we don't want to do anything with the hour
-            if secondTimeParse[0] == "12"{
-                hour = (Int(secondTimeParse[0]) ?? 200) // If noon keep the hour as is
-            }else{
-                hour = (Int(secondTimeParse[0]) ?? 200) + 12 // If not noon add 12 hours to turn into military time
-            }
-            
-        }else{
-            //The if statement checks to see if it is midnight. If it is midnight then that is hour zero in military time
-            if secondTimeParse[0] == "12"{
-                hour = 0 // If midnight change hour to 0 for military time
-            }else{
-                hour = Int(secondTimeParse[0]) ?? 100 // If not midnight keep the hour as it
-            }
-        }
+        let components = DateComponents(calendar: calendar, year: year ,month: month, day: day, hour: hour, minute: minute, second: seconds)
         
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = coordinates
@@ -54,9 +39,10 @@ class PushNotificationService {
         notificationContent.subtitle = subtitle
         //notificationContent.subtitle = hour
         //let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: .init(year: 2023, month: 10, day: 14, hour: hour, minute: Int(secondTimeParse[1])), repeats: true)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
 
         let notificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: trigger)
+        print(components)
 
         UNUserNotificationCenter.current().add(notificationRequest)
     }

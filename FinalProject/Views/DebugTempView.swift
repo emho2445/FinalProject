@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//THIS VIEW WILL NOT BE IN THE FINAL PRODUCT. IT IS ONLY A STEPPING STONE TO GET CERTAIN DATA AND FUNCTIONS SET UP CORRECTLY. THEREFORE I WAS NOT CONCERNED WITH UI OR APPEARANCE, JUST FUNCTIONALITY
+
 struct DebugTempView: View {
     @ObservedObject var timeViewModel = TimeViewModel()
     let lat: String
@@ -27,42 +29,42 @@ struct DebugTempView: View {
                 .edgesIgnoringSafeArea(.all)
             Rectangle()
                 .colorInvert()
-            .frame(height: 400)
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
                 .opacity(0.70)
             VStack{
                 
+                Button("Allow Push Notifications"){
+                    pushNotificationService.requestPermissions()
+                    timeViewModel.changeNotificationPermissions()
+                }.customNavigationLink()
+                
                 if let existingLocationTimes = timeViewModel.locationTimes{
                     Text("Lat: \(lat), Long: \(lng)")
-                    Text("Sunrise: \(existingLocationTimes.results.sunrise.basicTimeDate ?? Date.now)")
-                    Text("Sunset: \(existingLocationTimes.results.sunset)")
-                    Text("Solar Noon: \(existingLocationTimes.results.solar_noon)")
-                    //Text("Day Length: \(existingLocationTimes.results.day_length)")
-                    let date = existingLocationTimes.results.sunrise.basicTimeDate
-                    Text("\(date ?? Date.now)")
+                    if let sunrise = existingLocationTimes.results.sunrise.basicTimeDate{
+                        Text("\(sunrise)")
+                            .frame(maxWidth:350)
+                        Button{
+                            pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will rise at \(sunrise) today", time: sunrise)
+                        } label:{
+                            Text("Set notification for sunrise")
+                        }.disabled(timeViewModel.notificationsDisabled)
+                            .customNavigationLink()
+                    }
+                    if let sunset = existingLocationTimes.results.sunset.basicTimeDate{
+                        Text("\(sunset)")
+                            .frame(maxWidth:350)
+                        Button("Set notification for sunset"){
+                            pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will set at  \(sunset) today", time: sunset)
+                        }.disabled(timeViewModel.notificationsDisabled)
+                            .customNavigationLink()
+                    }
                     
-                    Group{
-                        Text("Civil Twilight Start: \(existingLocationTimes.results.civil_twilight_begin)")
-                        Text("Civil Twilight End: \(existingLocationTimes.results.civil_twilight_end)")
-                        Text("Nautical Twilight Start: \(existingLocationTimes.results.nautical_twilight_begin)")
-                        Text("Nautical Twilight End: \(existingLocationTimes.results.nautical_twilight_end)")
-                        Text("Astronomical Twilight Start: \(existingLocationTimes.results.astronomical_twilight_begin)")
-                        Text("Astronomical Twilight End: \(existingLocationTimes.results.astronomical_twilight_end)")
-                    }
                     Spacer()
                         .frame(height: 20.0)
-                    if let latitude = Double(lat), let longitude = Double(lng){
-                        NavigationLink("Go to Map"){
-                            MapView(lat: latitude, lng: longitude)
-                        }
-                    }
-                    Spacer()
-                        .frame(height: 20.0)
-//                    Button("Set notification for sunrise"){
-//                        pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will rise at \(existingLocationTimes.results.sunrise) today", time: existingLocationTimes.results.sunrise)
-//                    }
-//                    Button("Set notification for sunset"){
-//                        pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will set at  \(existingLocationTimes.results.sunset) today", time: existingLocationTimes.results.sunset)
-//                    }
+
+
+
                 }else{
                     ZStack{
                         Rectangle()

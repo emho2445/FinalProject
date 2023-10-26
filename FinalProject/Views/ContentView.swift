@@ -15,10 +15,11 @@ struct ContentView: View {
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-//                Rectangle()
-//                    .colorInvert()
-//                    .frame(height: 300)
-//                    .opacity(0.70)
+                Rectangle()
+                    .colorInvert()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(0.70)
                 VStack{
                     Text("Explore sunrise and sunset times at different locations around the world.")
                         .font(.title)
@@ -36,7 +37,7 @@ struct ContentView: View {
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
+                
 
             })
             
