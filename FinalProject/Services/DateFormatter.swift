@@ -14,7 +14,7 @@ public extension Date {
 
 public extension String {
     var hourMinuteSecDate: Date? { return DateFormatter.hourMinuteSecFormatter.date(from: self) }
-    var basicTimeString: Date? { return DateFormatter.basicTimeFormatter.date(from: self) }
+    var basicTimeDate: Date? { return DateFormatter.basicTimeFormatter.date(from: self) }
 }
 
 public extension DateFormatter {
@@ -23,16 +23,17 @@ public extension DateFormatter {
     
     static let hourMinuteSecFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-DDTHH:mm:ss+hh:mm"
+        formatter.dateFormat = "YYYY-MM-DDTHH:mm:ss+hh:mm" //2015-05-21T05:05:35+00:00
         formatter.timeZone = TimeZone.autoupdatingCurrent
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
     
     static let basicTimeFormatter: DateFormatter = {
+        print()
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-DDTHH:mm:ss+hh:mm"
-        formatter.timeZone = TimeZone.autoupdatingCurrent
+        //formatter.timeZone = TimeZone.autoupdatingCurrent
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()

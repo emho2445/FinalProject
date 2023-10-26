@@ -12,7 +12,10 @@ struct DebugTempView: View {
     let lat: String
     let lng: String
     
+    //let date: Date
+    
     var pushNotificationService = PushNotificationService()
+    
     
     var body: some View {
     
@@ -24,16 +27,18 @@ struct DebugTempView: View {
                 .edgesIgnoringSafeArea(.all)
             Rectangle()
                 .colorInvert()
-                .frame(height: 400)
+            .frame(height: 400)
                 .opacity(0.70)
             VStack{
                 
                 if let existingLocationTimes = timeViewModel.locationTimes{
                     Text("Lat: \(lat), Long: \(lng)")
-                    Text("Sunrise: \(existingLocationTimes.results.sunrise)")
+                    Text("Sunrise: \(existingLocationTimes.results.sunrise.basicTimeDate ?? Date.now)")
                     Text("Sunset: \(existingLocationTimes.results.sunset)")
                     Text("Solar Noon: \(existingLocationTimes.results.solar_noon)")
                     //Text("Day Length: \(existingLocationTimes.results.day_length)")
+                    let date = existingLocationTimes.results.sunrise.basicTimeDate
+                    Text("\(date ?? Date.now)")
                     
                     Group{
                         Text("Civil Twilight Start: \(existingLocationTimes.results.civil_twilight_begin)")
