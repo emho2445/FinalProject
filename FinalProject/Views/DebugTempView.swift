@@ -17,21 +17,10 @@ struct DebugTempView: View {
     //let date: Date
     
     var pushNotificationService = PushNotificationService()
-    
-    
     var body: some View {
     
         
         ZStack(content: {
-            Image("Earth")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-            Rectangle()
-                .colorInvert()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-                .opacity(0.70)
             VStack{
                 
                 Button("Allow Push Notifications"){
@@ -60,10 +49,8 @@ struct DebugTempView: View {
                             .customNavigationLink()
                     }
                     
-                    Spacer()
-                        .frame(height: 20.0)
-
-
+//                    Spacer()
+//                        .frame(height: 20.0)
 
                 }else{
                     ZStack{
@@ -85,13 +72,12 @@ struct DebugTempView: View {
                 
             }
         })
+        .padding()
+        .background(.thinMaterial)
+        .cornerRadius(15)
         .onAppear {
             timeViewModel.getSunTimes(lat: lat, lng:lng)
         }
-        .navigationTitle("")
-        .toolbarBackground(.visible, for: .navigationBar)
-        .toolbarColorScheme(.dark, for: .navigationBar)
-        
     }
 }
 

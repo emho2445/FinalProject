@@ -36,13 +36,9 @@ struct CoordinateView: View {
                     .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
                     
                     if lat != "", lng != "" {
-                        NavigationLink(destination: DebugTempView(lat: lat, lng: lng)){
-                            Text("Go to Temp page ->")
+                        NavigationLink(destination: MapView(lat: Double(lat)!, lng: Double(lng)!)){
+                            Text("See Details ->")
                         }.customNavigationLink()
-// THE CORRECT CODE IS BELOW AND SHOULD BE PUT BACK IN ONCE MAP VIEW CALLS THE VIEWMODEL
-//                        NavigationLink(destination: MapView(lat: Double(lat)!, lng:   Double(lng)!)){
-//                            Text("Search Time Details ->")
-//                        }.customNavigationLink()
                     }
                     Spacer()
                         .frame(height: 25.0)

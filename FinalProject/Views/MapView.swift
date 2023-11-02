@@ -19,7 +19,14 @@ struct MapView: View {
     var body: some View {
         
         Map() {
-            Marker("Latitude: \(lat), Longitude: \(lng))", systemImage: "mappin.and.ellipse", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng))
+
+            Annotation("Latitude: \(lat), Longitude: \(lng))", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), anchor: .bottom){
+                VStack{
+                    DebugTempView(lat: String(lat), lng: String(lng))
+                }
+                .padding()
+//              .background(in: .capsule)
+            }
         }
         .mapStyle(.imagery(elevation: .realistic))
         .mapControls {
