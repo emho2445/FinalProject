@@ -11,31 +11,35 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             ZStack(content: {
-                Image("Earth")
+                Image("Sunset")
                     .resizable()
-                    .scaledToFill()
+                    //.aspectRatio(contentMode: .fill)
+                    //.frame(height: 1000, alignment: .top)
+                    .scaledToFit()
+                    //.scaledToFill()
                     .edgesIgnoringSafeArea(.all)
                 Rectangle()
                     .colorInvert()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-                    .opacity(0.70)
+                    .opacity(0.00)
                 VStack{
-                    Text("Explore sunrise and sunset times at different locations around the world.")
-                        .font(.title)
+                    Text("EXPLORE SOLAR TIMES AROUND THE WORLD")
+                        .font(Font.custom("Raleway", size: 42))
                         .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
+                        .multilineTextAlignment(.center)
                     Spacer()
-                        .frame(height: 50.0)
+                        .frame(height: 200.0)
                     NavigationLink("Explore by Coordinates ->"){
                         CoordinateView()
                     }.customNavigationLink()
-                    Spacer()
-                        .frame(height: 25.0)
-                    NavigationLink("Explore by Country ->"){
-                        MapView(lat: 20.00, lng: 45.00)
-                    }.customNavigationLink()
+//                    Spacer()
+//                        .frame(height: 25.0)
+//                    NavigationLink("Explore by Country ->"){
+//                        MapView(lat: 20.00, lng: 45.00)
+//                    }.customNavigationLink()
                 }
-                .padding()
+                //.padding()
                 .frame(maxWidth: .infinity)
                 
 

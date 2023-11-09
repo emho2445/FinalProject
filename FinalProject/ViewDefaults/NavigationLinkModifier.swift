@@ -15,7 +15,7 @@ struct NavigationLinkMod: ViewModifier {
             .padding()
             .frame(width: 250)
             .foregroundColor(.white)
-            .background(Color("ButtonBlue"))
+            .background(Color("Burnt"))
             .cornerRadius(10)
     }
 }

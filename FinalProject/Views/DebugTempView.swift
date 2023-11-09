@@ -6,22 +6,26 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 //THIS VIEW WILL NOT BE IN THE FINAL PRODUCT. IT IS ONLY A STEPPING STONE TO GET CERTAIN DATA AND FUNCTIONS SET UP CORRECTLY. THEREFORE I WAS NOT CONCERNED WITH UI OR APPEARANCE, JUST FUNCTIONALITY
 
-struct DebugTempView: View {
+struct DetailsView: View {
     @ObservedObject var timeViewModel = TimeViewModel()
+    @Environment(\.dismiss) var dismiss
     let lat: String
     let lng: String
+    //let latlngCountry: String
     
     //let date: Date
     
     var pushNotificationService = PushNotificationService()
     var body: some View {
-    
+        
         
         ZStack(content: {
             VStack{
+                
                 
                 Button("Allow Push Notifications"){
                     pushNotificationService.requestPermissions()
@@ -29,10 +33,11 @@ struct DebugTempView: View {
                 }.customNavigationLink()
                 
                 if let existingLocationTimes = timeViewModel.locationTimes{
-                    Text("Lat: \(lat), Long: \(lng)")
+                    Text(timeViewModel.latlngCountry ?? "No Country")
                     if let sunrise = existingLocationTimes.results.sunrise.basicTimeDate{
                         Text("\(sunrise)")
                             .frame(maxWidth:350)
+                            .foregroundColor(.black)
                         Button{
                             pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will rise at \(sunrise) today", time: sunrise)
                         } label:{
@@ -49,9 +54,18 @@ struct DebugTempView: View {
                             .customNavigationLink()
                     }
                     
-//                    Spacer()
-//                        .frame(height: 20.0)
-
+                    Spacer()
+                        .frame(height:20)
+                        
+                    
+                    Button("Close Sheet"){
+                        dismiss()
+                    }.foregroundColor(Color("Burnt"))
+                    
+                    
+                    //                    Spacer()
+                    //                        .frame(height: 20.0)
+                    
                 }else{
                     ZStack{
                         Rectangle()
@@ -73,8 +87,7 @@ struct DebugTempView: View {
             }
         })
         .padding()
-        .background(.thinMaterial)
-        .cornerRadius(15)
+        .foregroundColor(.black)
         .onAppear {
             timeViewModel.getSunTimes(lat: lat, lng:lng)
         }

@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import MapKit
+import CoreLocation
 
 class TimeViewModel: ObservableObject {
     @Published var locationTimes: LocationTimes?
     @Published var notificationsDisabled: Bool = true
+    @Published var latlngCountry: String?
     
     @MainActor
     func getSunTimes(lat: String, lng: String) -> () {
@@ -22,6 +25,11 @@ class TimeViewModel: ObservableObject {
             } catch {
                 print("Error: \(error.localizedDescription)")
             }
+            
+            reverseGeocoding(latitude: Double(lat) ?? 0.00, longitude: Double(lng) ?? 0.00)
+            
+            //potential reverse geocoding function
+            
         }
     }
     
@@ -29,6 +37,25 @@ class TimeViewModel: ObservableObject {
         notificationsDisabled = false
     }
     
+    func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+            let geocoder = CLGeocoder()
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            geocoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+                if error != nil {
+                    print("Failed to retrieve address")
+                    return
+                }
+                
+                if let placemarks = placemarks, let placemark = placemarks.first {
+                    print(placemark.country!)
+                    self.latlngCountry = placemark.country!
+                }
+                else
+                {
+                    print("No Matching Address Found")
+                }
+            })
+        }
     
     
 }

@@ -12,6 +12,7 @@ import MapKit
 struct MapView: View {
 // USE THIS COMMENTED CODE TO START TO FIGURE OUT WEEK 2 CODE
 //    @ObservedObject var timeViewModel = TimeViewModel()
+    @State private var showSheet = false
     let lat: Double
     let lng: Double
     
@@ -20,11 +21,16 @@ struct MapView: View {
         
         Map() {
 
-            Annotation("Latitude: \(lat), Longitude: \(lng))", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), anchor: .bottom){
+            Annotation("Latitude: \(lat), Longitude: \(lng)", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), anchor: .bottom){
                 VStack{
-                    DebugTempView(lat: String(lat), lng: String(lng))
+                    Button("Show Time Details"){
+                        showSheet = true
+                    }.sheet(isPresented: $showSheet){
+                        DetailsView(lat: String(lat), lng: String(lng))
+                    }.customNavigationLink()
+                    //DebugTempView(lat: String(lat), lng: String(lng))
                 }
-                .padding()
+                //.padding()
 //              .background(in: .capsule)
             }
         }
