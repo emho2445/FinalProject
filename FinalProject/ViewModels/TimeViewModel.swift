@@ -47,8 +47,15 @@ class TimeViewModel: ObservableObject {
                 }
                 
                 if let placemarks = placemarks, let placemark = placemarks.first {
-                    print(placemark.country!)
-                    self.latlngCountry = placemark.country!
+                    //print(placemark.country!)
+                    if let country = placemark.country{
+                        self.latlngCountry = placemark.country
+                    }
+                    
+                    if let ocean = placemark.ocean{
+                        self.latlngCountry = placemark.ocean
+                    }
+
                 }
                 else
                 {

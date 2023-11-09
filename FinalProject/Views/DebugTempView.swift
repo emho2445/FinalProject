@@ -34,6 +34,7 @@ struct DetailsView: View {
                 
                 if let existingLocationTimes = timeViewModel.locationTimes{
                     Text(timeViewModel.latlngCountry ?? "No Country")
+                        .font(.title)
                     if let sunrise = existingLocationTimes.results.sunrise.basicTimeDate{
                         Text("\(sunrise)")
                             .frame(maxWidth:350)
