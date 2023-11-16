@@ -56,28 +56,28 @@ import CoreLocation
 
 struct MapView: View {
     let lat: Double
-    let lng: Double
-    
-    var coordinate: CLLocationCoordinate2D
-    
-//    init(coordinate: CLLocationCoordinate2D){
-//        self.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-//    }
-    
-    //let startCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        let lng: Double
+        
+        @State private var cameraProsition: MapCameraPosition
+        
+        init(lat: Double, lng: Double) {
+            self.lat = lat
+            self.lng = lng
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+            _cameraProsition = State(initialValue: MapCameraPosition.camera(MapCamera(
+                centerCoordinate: coordinate,
+                distance: 3729,
+                heading: 92,
+                pitch: 70
+            )))
+        }
     
     @State private var showSheet = false
     @State var placeAPin = false
     @State var pinLocation :CLLocationCoordinate2D? = nil
     
-//    @State private var cameraProsition: MapCameraPosition = .camera(
-//        MapCamera(
-//            centerCoordinate: coordinate,
-//            distance: 3729,
-//            heading: 92,
-//            pitch: 70
-//        )
-//    )
+    @State var mapLocations: [CLLocationCoordinate2D] = []
+
     
     var body: some View {
         GeometryReader { proxy in
@@ -85,13 +85,30 @@ struct MapView: View {
                 VStack{
                     MapReader{ reader in
                         Map(
-                            //position: $cameraProsition,
+                            position: $cameraProsition,
                             interactionModes: .all
                         )
                         {
+                            Annotation("Latitude: \(lat), Longitude: \(lng)", coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng), anchor: .bottom){
+                                VStack{
+                                    Button("Add a Pin"){
+                                        mapLocations.append(CLLocationCoordinate2D(latitude: lat, longitude: lng))
+                                    }.customNavigationLink()
+                                    Button("Show Time Details"){
+                                        showSheet = true
+                                    }.sheet(isPresented: $showSheet){
+                                        DetailsView(lat: String(lat), lng: String(lng))
+                                    }.customNavigationLink()
+                                }
+                            }
+                            
+                            
                             if let pl = pinLocation {
                                 Annotation("(\(pl.latitude), \(pl.longitude))", coordinate: pl){
                                     VStack{
+                                        Button("Add a Pin"){
+                                            mapLocations.append(CLLocationCoordinate2D(latitude: lat, longitude: lng))
+                                        }
                                         Button("Show Time Details"){
                                             showSheet = true
                                         }.sheet(isPresented: $showSheet){
@@ -129,7 +146,3 @@ struct MapView: View {
             }
         }
     }
-
-//extension CLLocationCoordinate2D{
-//    var denver = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-//}
