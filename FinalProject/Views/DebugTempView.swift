@@ -91,6 +91,7 @@ struct DetailsView: View {
         .foregroundColor(.black)
         .onAppear {
             timeViewModel.getSunTimes(lat: lat, lng:lng)
+            timeViewModel.createSunriseData(lat: lat, lng: lng)
         }
     }
 }
