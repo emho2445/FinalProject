@@ -15,6 +15,10 @@ struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
     let lat: String
     let lng: String
+    @State var graphAppear = false
+    
+    @State var pageLoaded = false
+    @State var appearCount = 0
     //let latlngCountry: String
     
     //let date: Date
@@ -26,6 +30,7 @@ struct DetailsView: View {
         ZStack(content: {
             VStack{
                 
+                Text("Array Length: \(timeViewModel.sunriseData.count)")
                 
                 Button("Allow Push Notifications"){
                     pushNotificationService.requestPermissions()
@@ -57,15 +62,31 @@ struct DetailsView: View {
                     
                     Spacer()
                         .frame(height:20)
+                    
+                        Button("Generate Graph"){
+                            //timeViewModel.createSunriseData(lat: lat, lng: lng)
+                            graphAppear = true
+                        }
+                    
+                    
+                    
+                    if graphAppear == true{
+                        if timeViewModel.sunriseData.isEmpty{
+                            Text("Loading Graph")
+                        }else{
+                            GraphView(graphData: timeViewModel.sunriseData)
+                        }
+                    }
+                    
+                    
+                    //GraphView(graphData: timeViewModel.sunriseData)
                         
                     
                     Button("Close Sheet"){
                         dismiss()
+                        graphAppear = false
                     }.foregroundColor(Color("Burnt"))
                     
-                    
-                    //                    Spacer()
-                    //                        .frame(height: 20.0)
                     
                 }else{
                     ZStack{
@@ -89,10 +110,16 @@ struct DetailsView: View {
         })
         .padding()
         .foregroundColor(.black)
-        .onAppear {
-            timeViewModel.getSunTimes(lat: lat, lng:lng)
+        .onAppear(perform: onLoad)
+    }
+    
+    func onLoad(){
+        if pageLoaded == false {
+            appearCount += 1
+            timeViewModel.getSunTimes(lat: lat, lng: lng)
             timeViewModel.createSunriseData(lat: lat, lng: lng)
         }
+        pageLoaded = true
     }
 }
 

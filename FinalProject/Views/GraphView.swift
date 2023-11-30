@@ -7,13 +7,46 @@
 
 import Foundation
 import SwiftUI
+import Charts
 
 struct GraphView: View {
+    let graphData: [FutureSunrises]
+    
+    var maxGraphData: FutureSunrises?{
+        graphData.max { $0.sunrise < $1.sunrise}
+    }
+    
+    var minGraphData: FutureSunrises?{
+        graphData.min { $0.sunrise > $1.sunrise}
+    }
+    
+    
+    
     var body: some View {
         
-       Text("Hello")
-
+        VStack{
+            Chart{
+                ForEach (graphData) { dataPoint in
+                    LineMark(x: .value("Date", dataPoint.date), 
+                             y: .value("Time", dataPoint.sunrise))
+                    .symbol(){
+                        Circle()
+                            .fill(.red)
+                            .frame(width: 7, height: 7)
+                    }
+                    .foregroundStyle(.orange)
+                    
+                }
+                
+                
+                //BarMark(x: .value("Date", "\(Date.now)"), y: .value("Time", "\(Date.now)"))
+            }
+            .chartXScale(domain: graphData[0].date...graphData[graphData.count-1].date)
+            //.chartYScale(domain: graphData.sunrise.min()...graphData.sunrise.max())
+            .aspectRatio(1, contentMode: .fit)
+            .padding()
             
-     
+        }
+            
     }
 }

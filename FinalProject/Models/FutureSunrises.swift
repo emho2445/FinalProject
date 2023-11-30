@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct FutureSunrises{
-    var date: String
-    var sunrise: String
+struct FutureSunrises: Identifiable{
+    var date: Date
+    var sunrise: Date
     
+    var id: Date {return date}
 }
