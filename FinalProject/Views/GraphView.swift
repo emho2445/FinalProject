@@ -42,6 +42,15 @@ struct GraphView: View {
                 //BarMark(x: .value("Date", "\(Date.now)"), y: .value("Time", "\(Date.now)"))
             }
             .chartXScale(domain: graphData[0].date...graphData[graphData.count-1].date)
+            .chartYAxis {
+                AxisMarks(values: .automatic(desiredCount: 6))
+            }
+            .chartXAxis{
+                AxisMarks(values: .stride(by: .month)) { _ in
+                       AxisValueLabel(format: .dateTime.month())
+                        AxisGridLine()
+                   }
+            }
             //.chartYScale(domain: graphData.sunrise.min()...graphData.sunrise.max())
             .aspectRatio(1, contentMode: .fit)
             .padding()

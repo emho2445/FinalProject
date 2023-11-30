@@ -26,91 +26,96 @@ struct DetailsView: View {
     var pushNotificationService = PushNotificationService()
     var body: some View {
         
-        
-        ZStack(content: {
-            VStack{
-                
-                Text("Array Length: \(timeViewModel.sunriseData.count)")
-                
-                Button("Allow Push Notifications"){
-                    pushNotificationService.requestPermissions()
-                    timeViewModel.changeNotificationPermissions()
-                }.customNavigationLink()
-                
-                if let existingLocationTimes = timeViewModel.locationTimes{
-                    Text(timeViewModel.latlngCountry ?? "No Country")
-                        .font(.title)
-                    if let sunrise = existingLocationTimes.results.sunrise.basicTimeDate{
-                        Text("\(sunrise)")
-                            .frame(maxWidth:350)
-                            .foregroundColor(.black)
-                        Button{
-                            pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will rise at \(sunrise) today", time: sunrise)
-                        } label:{
-                            Text("Set notification for sunrise")
-                        }.disabled(timeViewModel.notificationsDisabled)
-                            .customNavigationLink()
-                    }
-                    if let sunset = existingLocationTimes.results.sunset.basicTimeDate{
-                        Text("\(sunset)")
-                            .frame(maxWidth:350)
-                        Button("Set notification for sunset"){
-                            pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will set at  \(sunset) today", time: sunset)
-                        }.disabled(timeViewModel.notificationsDisabled)
-                            .customNavigationLink()
-                    }
+        ScrollView{
+            ZStack(content: {
+                VStack{
                     
-                    Spacer()
-                        .frame(height:20)
+                    //This is for debugging the data array. Will be deleting for final product
+                    Text("Array Length: \(timeViewModel.sunriseData.count)")
                     
+                    Button("Allow Push Notifications"){
+                        pushNotificationService.requestPermissions()
+                        timeViewModel.changeNotificationPermissions()
+                    }.customNavigationLink()
+                    
+                    if let existingLocationTimes = timeViewModel.locationTimes{
+                        Text(timeViewModel.latlngCountry ?? "No Country")
+                            .font(.title)
+                        if let sunrise = existingLocationTimes.results.sunrise.basicTimeDate{
+                            Text("\(sunrise)")
+                                .frame(maxWidth:350)
+                                .foregroundColor(.black)
+                            Button{
+                                pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will rise at \(sunrise) today", time: sunrise)
+                            } label:{
+                                Text("Set notification for sunrise")
+                            }.disabled(timeViewModel.notificationsDisabled)
+                                .customNavigationLink()
+                        }
+                        if let sunset = existingLocationTimes.results.sunset.basicTimeDate{
+                            Text("\(sunset)")
+                                .frame(maxWidth:350)
+                            Button("Set notification for sunset"){
+                                pushNotificationService.scheduleNotification(coordinates: "\(lat), \(lng)", subtitle: "The sun will set at  \(sunset) today", time: sunset)
+                            }.disabled(timeViewModel.notificationsDisabled)
+                                .customNavigationLink()
+                        }
+                        
+                        Spacer()
+                            .frame(height:20)
+                        
+                        Text("NOTE FOR THIS IN-PROGRESS APP: The chart data takes a while to load so please wait until you see the data print to the console in xCode or wait at least 10 seconds after opening the sheet before clicking 'Generate Graph'")
+                        
                         Button("Generate Graph"){
                             //timeViewModel.createSunriseData(lat: lat, lng: lng)
                             graphAppear = true
-                        }
-                    
-                    
-                    
-                    if graphAppear == true{
-                        if timeViewModel.sunriseData.isEmpty{
-                            Text("Loading Graph")
-                        }else{
-                            GraphView(graphData: timeViewModel.sunriseData)
-                        }
-                    }
-                    
-                    
-                    //GraphView(graphData: timeViewModel.sunriseData)
+                        }.customNavigationLink()
                         
-                    
-                    Button("Close Sheet"){
-                        dismiss()
-                        graphAppear = false
-                    }.foregroundColor(Color("Burnt"))
-                    
-                    
-                }else{
-                    ZStack{
-                        Rectangle()
-                            .colorInvert()
-                            .frame(height: 600)
-                            .opacity(0.80)
-                        VStack{
-                            Text("ERROR: COULD NOT LOAD TIME DETAILS")
-                                .foregroundColor(.red)
-                            Text("Instead, please enjoy this meme that Brodie made of Emma back in January")
-                                .frame(width: 300)
-                            //Image("ErrorMeme")
-                            Text("This is how Emma feels after breaking the entire API server :)")
-                                .frame(width:300)
+                        
+                        
+                        if graphAppear == true{
+                            if timeViewModel.sunriseData.isEmpty{
+                                Text("Loading Graph")
+                            }else{
+                                Text("Future Sunrise Times (in user's time)")
+                                GraphView(graphData: timeViewModel.sunriseData)
+                            }
+                        }
+                        
+                        
+                        //GraphView(graphData: timeViewModel.sunriseData)
+                        
+                        
+                        Button("Close Sheet"){
+                            dismiss()
+                            graphAppear = false
+                        }.foregroundColor(Color("Burnt"))
+                        
+                        
+                    }else{
+                        ZStack{
+                            Rectangle()
+                                .colorInvert()
+                                .frame(height: 600)
+                                .opacity(0.80)
+                            VStack{
+                                Text("ERROR: COULD NOT LOAD TIME DETAILS")
+                                    .foregroundColor(.red)
+                                Text("Instead, please enjoy this meme that Brodie made of Emma back in January")
+                                    .frame(width: 300)
+                                //Image("ErrorMeme")
+                                Text("This is how Emma feels after breaking the entire API server :)")
+                                    .frame(width:300)
+                            }
                         }
                     }
+                    
                 }
-                
-            }
-        })
-        .padding()
-        .foregroundColor(.black)
-        .onAppear(perform: onLoad)
+            })
+            .padding()
+            .foregroundColor(.black)
+            .onAppear(perform: onLoad)
+        }
     }
     
     func onLoad(){
