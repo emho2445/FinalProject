@@ -64,18 +64,19 @@ struct DetailsView: View {
                         Spacer()
                             .frame(height:20)
                         
-                        Text("NOTE FOR THIS IN-PROGRESS APP: The chart data takes a while to load so please wait until you see the data print to the console in xCode or wait at least 10 seconds after opening the sheet before clicking 'Generate Graph'")
-                        
                         Button("Generate Graph"){
                             //timeViewModel.createSunriseData(lat: lat, lng: lng)
                             graphAppear = true
+                            pageLoaded = timeViewModel.dataLoaded
                         }.customNavigationLink()
                         
                         
                         
                         if graphAppear == true{
-                            if timeViewModel.sunriseData.isEmpty{
-                                Text("Loading Graph")
+                            
+                            if pageLoaded == false{
+                                Text("Still Loading Graph Data: click 'Generate Graph' button until loaded")
+                                
                             }else{
                                 Text("Future Sunrise Times (in user's time)")
                                 GraphView(graphData: timeViewModel.sunriseData)

@@ -14,6 +14,8 @@ class TimeViewModel: ObservableObject {
     @Published var notificationsDisabled: Bool = true
     @Published var latlngCountry: String?
     var sunriseData: [FutureSunrises] = []
+    var dataLoaded = false
+    
     
     @MainActor
     func getSunTimes(lat: String, lng: String) -> () {
@@ -115,6 +117,7 @@ class TimeViewModel: ObservableObject {
                 //print(dateString)
                 try await getYearSunrises(lat: lat, lng: lng, date: dateString)
             }
+            dataLoaded = true
             for sunrise in sunriseData{
                 print(sunrise)
                 //                var dateSunrise = sunrise.sunrise.basicTimeDate
