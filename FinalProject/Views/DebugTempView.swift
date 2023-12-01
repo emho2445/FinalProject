@@ -67,15 +67,16 @@ struct DetailsView: View {
                         Button("Generate Graph"){
                             //timeViewModel.createSunriseData(lat: lat, lng: lng)
                             graphAppear = true
-                            pageLoaded = timeViewModel.dataLoaded
+                            //pageLoaded = timeViewModel.dataLoaded
                         }.customNavigationLink()
                         
                         
                         
                         if graphAppear == true{
                             
-                            if pageLoaded == false{
-                                Text("Still Loading Graph Data: click 'Generate Graph' button until loaded")
+                            if timeViewModel.dataLoaded == false{
+                                Text("Loading Graph Data...")
+                                    .foregroundStyle(.blue)
                                 
                             }else{
                                 Text("Future Sunrise Times (in user's time)")
@@ -85,7 +86,6 @@ struct DetailsView: View {
                         
                         
                         //GraphView(graphData: timeViewModel.sunriseData)
-                        
                         
                         Button("Close Sheet"){
                             dismiss()

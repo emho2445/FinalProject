@@ -14,7 +14,7 @@ class TimeViewModel: ObservableObject {
     @Published var notificationsDisabled: Bool = true
     @Published var latlngCountry: String?
     var sunriseData: [FutureSunrises] = []
-    var dataLoaded = false
+    @Published var dataLoaded = false
     
     
     @MainActor
