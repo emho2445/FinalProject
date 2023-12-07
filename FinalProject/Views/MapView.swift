@@ -34,7 +34,7 @@ struct MapView: View {
     @State var pinLocation :CLLocationCoordinate2D? = nil
     
     //Pinned locations list
-    @State var mapLocations: [MapLocations] = []
+    @State var mapLocations: [CLLocationCoordinate2D] = []
     
     //Push notifications
     @StateObject var pushNotificationService = PushNotificationService()
@@ -64,7 +64,7 @@ struct MapView: View {
                                 VStack{
                                     Button{
                                         //I know the issue is here
-                                        mapLocations.append(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng))
+                                        mapLocations.append(CLLocationCoordinate2D(latitude: lat, longitude: lng))
                                     } label: {
                                         Text("Add a Pin")
                                             .customNavigationLink()
@@ -130,13 +130,14 @@ struct MapView: View {
                     Button("Allow Notifications"){
                         pushNotificationService.requestPermissions()
                     }
+                    Spacer()
                     
                     Button("Show Pin List") {
                         placeAPin = true
                         print(mapLocations)
                         showPinnedList = true
                     }.sheet(isPresented: $showPinnedList){
-                        
+                        PinnedLocationsView(mapLocations: mapLocations)
                     }
                 }
             }
