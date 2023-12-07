@@ -5,16 +5,18 @@
 //  Created by Emma  Hopson on 11/15/23.
 //
 
-//import Foundation
-//import MapKit
-//import CoreLocation
-//
+import Foundation
+import MapKit
+import CoreLocation
+import SwiftUI
+
 //class MapViewModel: ObservableObject {
-//    @Published var mapLocations: MapLocations?
+//    @Published var mapLocations: [MapLocations?]
 //    
-//    @MainActor
-//    func setMapLocation(lat: Double, lng: Double) -> () {
-//        
+//    func addToMapLocations(coordinate: CLLocationCoordinate2D){
+//        Task{ @MainActor in
+//            mapLocations.append(lat: coordinate.latitude, lng: coordinate.longitude)
+//        }
 //    }
 //    
 //}

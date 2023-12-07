@@ -30,14 +30,13 @@ struct ContentView: View {
                         .multilineTextAlignment(.center)
                     Spacer()
                         .frame(height: 200.0)
-                    NavigationLink("Explore by Coordinates ->"){
+                    NavigationLink{
                         CoordinateView()
-                    }.customNavigationLink()
-//                    Spacer()
-//                        .frame(height: 25.0)
-//                    NavigationLink("Explore by Country ->"){
-//                        MapView(lat: 20.00, lng: 45.00)
-//                    }.customNavigationLink()
+                    }label: {
+                        Text("Start Exploring ->")
+                            .customNavigationLink()
+                    }
+                    //.customNavigationLink()
                 }
                 //.padding()
                 .frame(maxWidth: .infinity)

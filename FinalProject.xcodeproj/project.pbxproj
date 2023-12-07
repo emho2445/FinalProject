@@ -35,6 +35,7 @@
 		25019CEA2AFCBF3300C116ED /* Raleway-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25019CD62AFCBEC200C116ED /* Raleway-SemiBoldItalic.ttf */; };
 		25019CEB2AFCBF3300C116ED /* Raleway-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25019CDC2AFCBEC300C116ED /* Raleway-Thin.ttf */; };
 		25019CEC2AFCBF3300C116ED /* Raleway-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25019CD12AFCBEC200C116ED /* Raleway-ThinItalic.ttf */; };
+		2576FB212B2197690075A390 /* PinnedLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2576FB202B2197690075A390 /* PinnedLocations.swift */; };
 		25D6CD032B055A6A00FCC10A /* MapLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D6CD022B055A6A00FCC10A /* MapLocations.swift */; };
 		25D6CD052B05641200FCC10A /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D6CD042B05641200FCC10A /* MapViewModel.swift */; };
 		25D6CD072B15A99600FCC10A /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D6CD062B15A99600FCC10A /* GraphView.swift */; };
@@ -74,6 +75,7 @@
 		25019CDA2AFCBEC300C116ED /* Raleway-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-BlackItalic.ttf"; sourceTree = "<group>"; };
 		25019CDB2AFCBEC300C116ED /* Raleway-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-MediumItalic.ttf"; sourceTree = "<group>"; };
 		25019CDC2AFCBEC300C116ED /* Raleway-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Raleway-Thin.ttf"; sourceTree = "<group>"; };
+		2576FB202B2197690075A390 /* PinnedLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedLocations.swift; sourceTree = "<group>"; };
 		25D6CD022B055A6A00FCC10A /* MapLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocations.swift; sourceTree = "<group>"; };
 		25D6CD042B05641200FCC10A /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		25D6CD062B15A99600FCC10A /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				25019CA12AEA058F00C116ED /* ContentView.swift */,
 				25019CB12AEA0DDD00C116ED /* CoordinateView.swift */,
 				25019CB32AEA0E4700C116ED /* MapView.swift */,
+				2576FB202B2197690075A390 /* PinnedLocations.swift */,
 				25019CC02AEA3F3500C116ED /* DebugTempView.swift */,
 				25D6CD062B15A99600FCC10A /* GraphView.swift */,
 			);
@@ -292,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25D6CD032B055A6A00FCC10A /* MapLocations.swift in Sources */,
+				2576FB212B2197690075A390 /* PinnedLocations.swift in Sources */,
 				25019CBF2AEA34EC00C116ED /* DateFormatter.swift in Sources */,
 				25019CA22AEA058F00C116ED /* ContentView.swift in Sources */,
 				25019CB42AEA0E4700C116ED /* MapView.swift in Sources */,

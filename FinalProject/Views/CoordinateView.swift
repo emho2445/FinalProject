@@ -73,7 +73,8 @@ struct CoordinateView: View {
                             
                             NavigationLink(destination: MapView(lat: doubleLat, lng: doubleLng)){
                                 Text("See Details ->")
-                            }.customNavigationLink()
+                                    .customNavigationLink()
+                            }
                         }else{
                             Text("ERROR!")
                                 .foregroundColor(.red)
@@ -86,10 +87,13 @@ struct CoordinateView: View {
                     Spacer()
                         .frame(height: 25.0)
                     
-                    Button("Clear Fields"){
+                    Button{
                         lat = ""
                         lng = ""
-                    }.customNavigationLink()
+                    }label: {
+                        Text("Clear Fields")
+                            .customNavigationLink()
+                    }
                     
                     Spacer()
                     

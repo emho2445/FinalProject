@@ -8,15 +8,17 @@
 import Foundation
 import NotificationCenter
 
-class PushNotificationService {
-     var isPermissionGranted: Bool = false
+class PushNotificationService: ObservableObject {
+     @Published var isPermissionGranted: Bool = false
 
     func requestPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                self.isPermissionGranted = true
-            } else if let error = error {
-                print(error.localizedDescription)
+            DispatchQueue.main.async{
+                if success {
+                    self.isPermissionGranted = true
+                } else if let error = error {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
