@@ -18,7 +18,7 @@ struct PinnedLocationsView: View {
     @State var locationsLoaded = false
     
     @Binding var showPinnedList: Bool
-    @Binding var selectedCoordinate: CLLocationCoordinate2D?
+    //@Binding var selectedCoordinate: CLLocationCoordinate2D?
     //var onLocationSelected: ((CLLocationCoordinate2D) -> Void)?
     
     var body: some View {
@@ -40,10 +40,7 @@ struct PinnedLocationsView: View {
                     if locationsLoaded == false{
                         Text("Pinned Locations Loading..")
                     }else{
-                        ListView(pinnedLocationList: pinnedLocationList,
-                                 onLocationSelected: { location in
-                                                 self.selectedCoordinate = location // Update the selected coordinate
-                                             })
+                        ListView(pinnedLocationList: pinnedLocationList)
                         //.frame(minHeight: 300)
                     }
                     
@@ -70,10 +67,10 @@ struct PinnedLocationsView: View {
         locationsLoaded = true
     }
     
-    func locationSelected(_ location: LocationMarkings) {
-        selectedCoordinate = location.location
-            showPinnedList = false // Dismiss PinnedLocationsView
-        }
+//    func locationSelected(_ location: LocationMarkings) {
+//        //selectedCoordinate = location.location
+//            showPinnedList = false // Dismiss PinnedLocationsView
+//        }
 }
 
 
@@ -89,38 +86,38 @@ struct LocationMarkings: Identifiable {
 
 
 struct ListView: View {
-    //@Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
     
     var pinnedLocationList: [LocationMarkings]
     var onLocationSelected: ((CLLocationCoordinate2D) -> Void)? // Callback closure
     
     var body: some View {
-//        List(pinnedLocationList, id: \.id){ location in
-//            NavigationLink(
-//                destination: MapView(lat: location.location.latitude, lng: location.location.longitude)
-//                                    .navigationBarBackButtonHidden(true) // Hides back button in the MapView
-//                                    .navigationBarItems(leading: Button(action: {
-//                                        presentationMode.wrappedValue.dismiss() // Dismisses PinnedLocationsView
-//                                    }) {
-//                                        Image(systemName: "arrow.backward")
-//                                    }),
-//                                label: {
-//                                    ListRowView(pinnedLocation: location)
-//                                }
-//                )
-//            }
-        
-        List(pinnedLocationList, id: \.id) { location in
-                    NavigationLink(
-                        destination: MapView(lat: location.location.latitude, lng: location.location.longitude), // Replace with the original destination
-                        label: {
-                            ListRowView(pinnedLocation: location)
-                                .onTapGesture {
-                                    onLocationSelected?(location.location) // Call the closure when a location is selected
+        List(pinnedLocationList, id: \.id){ location in
+            NavigationLink(
+                destination: MapView(lat: location.location.latitude, lng: location.location.longitude)
+                                    .navigationBarBackButtonHidden(true) // Hides back button in the MapView
+                                    .navigationBarItems(leading: Button(action: {
+                                        presentationMode.wrappedValue.dismiss() // Dismisses PinnedLocationsView
+                                    }) {
+                                        Image(systemName: "arrow.backward")
+                                    }),
+                                label: {
+                                    ListRowView(pinnedLocation: location)
                                 }
-                        }
-                    )
-                }
+                )
+            }
+        
+//        List(pinnedLocationList, id: \.id) { location in
+//                    NavigationLink(
+//                        destination: MapView(lat: location.location.latitude, lng: location.location.longitude), // Replace with the original destination
+//                        label: {
+//                            ListRowView(pinnedLocation: location)
+//                                .onTapGesture {
+//                                    onLocationSelected?(location.location) // Call the closure when a location is selected
+//                                }
+//                        }
+//                    )
+//                }
         
         
         

@@ -125,7 +125,6 @@ struct MapView: View {
                     }
                     
                 }
-                .navigationTitle("Map View")
                 .toolbar {
                     Button("Allow Notifications"){
                         pushNotificationService.requestPermissions()
@@ -140,10 +139,10 @@ struct MapView: View {
                     }.sheet(isPresented: $showPinnedList){
                         PinnedLocationsView(
                             mapLocations: mapLocations,
-                            showPinnedList: $showPinnedList,
-                            selectedCoordinate: $selectedCoordinate)
+                        showPinnedList: $showPinnedList)
                     }
                 }
+                .navigationTitle("Map View")
             }
         }
     }
