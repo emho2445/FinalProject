@@ -17,8 +17,13 @@ struct PinnedLocationsView: View {
     @State var pinnedLocationList: [LocationMarkings] = []
     @State var locationsLoaded = false
     
+    @Binding var showPinnedList: Bool
+    @Binding var selectedCoordinate: CLLocationCoordinate2D?
+    //var onLocationSelected: ((CLLocationCoordinate2D) -> Void)?
+    
     var body: some View {
-
+        NavigationView{
+            
             ZStack(content: {
                 
                 VStack{
@@ -31,12 +36,15 @@ struct PinnedLocationsView: View {
                     
                     Spacer()
                         .frame(height: 20)
-                   
+                    
                     if locationsLoaded == false{
                         Text("Pinned Locations Loading..")
                     }else{
-                        ListView(pinnedLocationList: pinnedLocationList)
-                            //.frame(minHeight: 300)
+                        ListView(pinnedLocationList: pinnedLocationList,
+                                 onLocationSelected: { location in
+                                                 self.selectedCoordinate = location // Update the selected coordinate
+                                             })
+                        //.frame(minHeight: 300)
                     }
                     
                     
@@ -46,12 +54,13 @@ struct PinnedLocationsView: View {
                     Button("Close Sheet"){
                         dismiss()
                     }.foregroundColor(Color("Burnt"))
-
+                    
                     
                 }
                 
             })
             .onAppear(perform: onLoad)
+        }
     }
     
     
@@ -60,6 +69,11 @@ struct PinnedLocationsView: View {
         print(pinnedLocationList)
         locationsLoaded = true
     }
+    
+    func locationSelected(_ location: LocationMarkings) {
+        selectedCoordinate = location.location
+            showPinnedList = false // Dismiss PinnedLocationsView
+        }
 }
 
 
@@ -75,19 +89,44 @@ struct LocationMarkings: Identifiable {
 
 
 struct ListView: View {
+    //@Environment(\.presentationMode) var presentationMode
     
     var pinnedLocationList: [LocationMarkings]
+    var onLocationSelected: ((CLLocationCoordinate2D) -> Void)? // Callback closure
     
     var body: some View {
-        List(pinnedLocationList, id: \.id){ location in
-            NavigationLink(destination: MapView(lat: location.location.latitude, lng: location.location.longitude)) {
-                ListRowView(pinnedLocation: location)
-            }
+//        List(pinnedLocationList, id: \.id){ location in
+//            NavigationLink(
+//                destination: MapView(lat: location.location.latitude, lng: location.location.longitude)
+//                                    .navigationBarBackButtonHidden(true) // Hides back button in the MapView
+//                                    .navigationBarItems(leading: Button(action: {
+//                                        presentationMode.wrappedValue.dismiss() // Dismisses PinnedLocationsView
+//                                    }) {
+//                                        Image(systemName: "arrow.backward")
+//                                    }),
+//                                label: {
+//                                    ListRowView(pinnedLocation: location)
+//                                }
+//                )
+//            }
+        
+        List(pinnedLocationList, id: \.id) { location in
+                    NavigationLink(
+                        destination: MapView(lat: location.location.latitude, lng: location.location.longitude), // Replace with the original destination
+                        label: {
+                            ListRowView(pinnedLocation: location)
+                                .onTapGesture {
+                                    onLocationSelected?(location.location) // Call the closure when a location is selected
+                                }
+                        }
+                    )
+                }
+        
+        
+        
         }
     }
-    
-    
-}
+
 
 struct ListRowView: View {
     

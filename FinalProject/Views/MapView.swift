@@ -34,25 +34,25 @@ struct MapView: View {
     @State var pinLocation :CLLocationCoordinate2D? = nil
     
     //Pinned locations list
-    @State var mapLocations: [CLLocationCoordinate2D] = []
+    @State var mapLocations: [CLLocationCoordinate2D] = UserDefaultsManager.getMapLocations() {
+        didSet {
+            UserDefaultsManager.saveMapLocations(mapLocations)
+        }
+    }
     
     //Push notifications
     @StateObject var pushNotificationService = PushNotificationService()
     
-    @State var showPinnedList = false
+    @State private var showPinnedList = false
+    
+    //For the PinnedLocationView management
+    @State private var selectedCoordinate: CLLocationCoordinate2D?
     
     
     var body: some View {
         GeometryReader { proxy in
             NavigationView {
                 VStack{
-                    
-                    
-                    
-                    //                    ForEach (mapLocations) { pinnedLocation in
-                    //                        Text(String(pinnedLocation))
-                    //
-                    //                    }
                     
                     MapReader{ reader in
                         Map(
@@ -66,7 +66,7 @@ struct MapView: View {
                                         //I know the issue is here
                                         mapLocations.append(CLLocationCoordinate2D(latitude: lat, longitude: lng))
                                     } label: {
-                                        Text("Add a Pin")
+                                        Text("Pin These Coordinates")
                                             .customNavigationLink()
                                     }
                                     //.customNavigationLink()
@@ -92,7 +92,7 @@ struct MapView: View {
                                         Button{
                                             mapLocations.append(CLLocationCoordinate2D(latitude: pl.latitude, longitude: pl.longitude))
                                         }label: {
-                                            Text("Add a Pin")
+                                            Text("Pin These Coordinates")
                                                 .customNavigationLink()
                                         }
                                         //.customNavigationLink()
@@ -130,14 +130,18 @@ struct MapView: View {
                     Button("Allow Notifications"){
                         pushNotificationService.requestPermissions()
                     }
+                    
                     Spacer()
                     
                     Button("Show Pin List") {
                         placeAPin = true
                         print(mapLocations)
-                        showPinnedList = true
+                        showPinnedList.toggle()
                     }.sheet(isPresented: $showPinnedList){
-                        PinnedLocationsView(mapLocations: mapLocations)
+                        PinnedLocationsView(
+                            mapLocations: mapLocations,
+                            showPinnedList: $showPinnedList,
+                            selectedCoordinate: $selectedCoordinate)
                     }
                 }
             }

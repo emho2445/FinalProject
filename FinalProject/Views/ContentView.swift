@@ -33,7 +33,7 @@ struct ContentView: View {
                     NavigationLink{
                         CoordinateView()
                     }label: {
-                        Text("Start Exploring ->")
+                        Text("Start Exploring →")
                             .customNavigationLink()
                     }
                     //.customNavigationLink()
